@@ -1,31 +1,52 @@
 import React from 'react'
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import { Edit, Delete } from '@mui/icons-material';
+
+import TextField from '@mui/material/TextField';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+
+import useToggle from './hooks/useToggle'
+import useInputState from './hooks/useInputState'
+import { ListItemSecondaryAction } from '@mui/material';
+
 
 function TodoItem(props) {
-  const { id, task, completed, deleteTodo } = props;
+  const { id, task, completed } = props;
 
-  const label = { inputProps: { 'aria-label': task } };
+  // reusable hooks:
+  const [input, toggleInput] = useToggle(false);
+  const [text, setText, resetText] = useInputState(task);
 
-  const handleClick = () => {
-    deleteTodo(id);
+  const handleDelete = () => {
+    props.deleteTodo(id);
   }
-
-  const handleChange = () => {
-    console.log('click cb')
-  }
-
-  // toggle checkbox
 
   return (
-    <div>
-      <Checkbox {...label} onChange={handleChange} />
-      {task}
-      <Button variant="outlined" onClick={handleClick}>Delete</Button>
-      {completed &&
-        <span>(completed)</span>
+    <ListItem>      
+      <Checkbox tabIndex={-1} checked={completed} />
+      {input 
+      ? <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            props.updateTodo(id, text);
+            toggleInput();
+          }
+        }>
+          <TextField name="text" value={text} onChange={setText} />
+          <Button type="submit" variant="outlined">update</Button>
+        </form>
+      : <ListItemText style={{textDecoration: completed ? 'line-through' : 'none'}}>
+          {task}
+        </ListItemText>
       }
-    </div>
+      <ListItemSecondaryAction>
+        <IconButton variant="outlined" onClick={toggleInput} aria-label="Edit"><Edit /></IconButton>
+        <IconButton variant="outlined" onClick={handleDelete} aria-label="Delete"><Delete /></IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
   )
 }
 

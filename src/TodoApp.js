@@ -15,14 +15,19 @@ function TodoApp() {
     { id: 3, task: 'bla3 bla3', completed: false }
   ]
   const [todos, setTodos] = useState(initialTodos);
+
   const addTodo = (newTask) => {
-    let tempTodos = todos;
-    setTodos([...tempTodos, {id: tempTodos.length + 1, task: newTask, completed: false }])
+    setTodos([...todos, {id: todos.length + 1, task: newTask, completed: false }])
   }
   const deleteTodo = (todoID) => {
     let tempTodos = todos;
     setTodos(tempTodos.filter(todo => todo.id !== todoID));
   }
+
+  const updateTodo = (todoID, updatedTask) => {
+    setTodos(todos.map(todo => todo.id === todoID ? { ...todo, task: updatedTask} : todo));
+  }
+  
   return (
     <Paper 
       style={{ padding: 0, margin: 0, height: '100vh', backgroundColor: '#fafafa'}}
@@ -33,8 +38,12 @@ function TodoApp() {
           <Typography color='inherit'>TODOS WITH HOOKS</Typography>
         </Toolbar>
       </AppBar>
-      <TodoForm addTodo={addTodo} />
-      <TodoList todos={todos} deleteTodo={deleteTodo} />
+      <Grid container justifyContent="center" style={{marginTop: '1rem'}}>
+        <Grid item xs={11} md={8} lg={4}>
+          <TodoForm addTodo={addTodo} />
+          <TodoList todos={todos} deleteTodo={deleteTodo} updateTodo={updateTodo} />
+        </Grid>
+      </Grid>
     </Paper>
   );
 }
