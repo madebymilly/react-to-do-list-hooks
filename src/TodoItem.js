@@ -8,7 +8,7 @@ import TextField from '@mui/material/TextField';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 
-import useToggle from './hooks/useToggle'
+import useToggleState from './hooks/useToggleState'
 import useInputState from './hooks/useInputState'
 import { ListItemSecondaryAction } from '@mui/material';
 
@@ -16,7 +16,7 @@ import { ListItemSecondaryAction } from '@mui/material';
 function TodoItem({ id, task, completed, updateTodo, deleteTodo, toggleTodo }) {
 
   // reusable hooks:
-  const [input, toggleInput] = useToggle(false);
+  const [isEditing, toggleIsEditing] = useToggleState(false);
   const [text, setText, resetText] = useInputState(task);
 
   const handleDelete = () => {
@@ -28,27 +28,31 @@ function TodoItem({ id, task, completed, updateTodo, deleteTodo, toggleTodo }) {
   }
 
   return (
-    <ListItem>      
-      <Checkbox tabIndex={-1} checked={completed} onClick={handleToggle} />
-      {input 
+    <ListItem>
+      {isEditing 
       ? <form
           onSubmit={(e) => {
             e.preventDefault();
             updateTodo(id, text);
-            toggleInput();
-          }
-        }>
-          <TextField name="text" value={text} onChange={setText} />
+            toggleIsEditing();
+            resetText();
+          }}
+          style={{ marginLeft: "1rem", width: "50%" }}
+        >
+          <TextField name="text" value={text} onChange={setText} margin="normal" fullWidth autoFocus />
           <Button type="submit" variant="outlined">update</Button>
         </form>
-      : <ListItemText style={{textDecoration: completed ? 'line-through' : 'none'}}>
-          {task}
-        </ListItemText>
+      : <> 
+          <Checkbox tabIndex={-1} checked={completed} onClick={handleToggle} />
+          <ListItemText style={{textDecoration: completed ? 'line-through' : 'none'}}>
+            {task}
+          </ListItemText>
+          <ListItemSecondaryAction>
+            <IconButton variant="outlined" onClick={toggleIsEditing} aria-label="Edit"><Edit /></IconButton>
+            <IconButton variant="outlined" onClick={handleDelete} aria-label="Delete"><Delete /></IconButton>
+          </ListItemSecondaryAction>
+        </>
       }
-      <ListItemSecondaryAction>
-        <IconButton variant="outlined" onClick={toggleInput} aria-label="Edit"><Edit /></IconButton>
-        <IconButton variant="outlined" onClick={handleDelete} aria-label="Delete"><Delete /></IconButton>
-      </ListItemSecondaryAction>
     </ListItem>
   )
 }
