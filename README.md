@@ -9,4 +9,3 @@
 
 # Todo:
 - remove create react app files
-- use another way of styling
