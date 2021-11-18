@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import AppBar from '@mui/material/AppBar';
@@ -10,22 +12,35 @@ import TodoForm from './TodoForm';
 
 function TodoApp() {
   const initialTodos = [
-    { id: 1, task: 'bla bla', completed: false },
-    { id: 2, task: 'bla2 bla2', completed: true },
-    { id: 3, task: 'bla3 bla3', completed: false }
+    { id: uuidv4(), task: 'bla bla', completed: false },
+    { id: uuidv4(), task: 'bla2 bla2', completed: true },
+    { id: uuidv4(), task: 'bla3 bla3', completed: false }
   ]
   const [todos, setTodos] = useState(initialTodos);
 
   const addTodo = (newTask) => {
-    setTodos([...todos, {id: todos.length + 1, task: newTask, completed: false }])
+    setTodos([...todos, {id: uuidv4(), task: newTask, completed: false }])
   }
+
   const deleteTodo = (todoID) => {
-    let tempTodos = todos;
-    setTodos(tempTodos.filter(todo => todo.id !== todoID));
+    let tempTodos = todos.filter(todo => todo.id !== todoID);
+    setTodos(tempTodos);
   }
 
   const updateTodo = (todoID, updatedTask) => {
-    setTodos(todos.map(todo => todo.id === todoID ? { ...todo, task: updatedTask} : todo));
+    let tempTodos = todos.map(todo => todo.id === todoID 
+      ? { ...todo, task: updatedTask} 
+      : todo
+    );
+    setTodos(tempTodos);
+  }
+
+  const toggleTodo = (todoID) => {
+    let tempTodos = todos.map(todo => todo.id === todoID
+      ? { ...todo, completed: !todo.completed }
+      : todo
+    );
+    setTodos(tempTodos)
   }
   
   return (
@@ -41,7 +56,12 @@ function TodoApp() {
       <Grid container justifyContent="center" style={{marginTop: '1rem'}}>
         <Grid item xs={11} md={8} lg={4}>
           <TodoForm addTodo={addTodo} />
-          <TodoList todos={todos} deleteTodo={deleteTodo} updateTodo={updateTodo} />
+          <TodoList 
+            todos={todos} 
+            deleteTodo={deleteTodo} 
+            updateTodo={updateTodo} 
+            toggleTodo={toggleTodo}
+          />
         </Grid>
       </Grid>
     </Paper>

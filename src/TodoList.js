@@ -4,8 +4,7 @@ import Paper from '@mui/material/Paper';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 
-function TodoList(props) {
-  const { todos, deleteTodo, updateTodo } = props;
+function TodoList({ todos, deleteTodo, updateTodo, toggleTodo }) {
   return (
     <Paper>
       <List>
@@ -18,6 +17,7 @@ function TodoList(props) {
             completed={item.completed} 
             deleteTodo={deleteTodo} 
             updateTodo={updateTodo}
+            toggleTodo={toggleTodo}
           />
           {item.id !== todos.length
             ?  <Divider />

@@ -13,25 +13,28 @@ import useInputState from './hooks/useInputState'
 import { ListItemSecondaryAction } from '@mui/material';
 
 
-function TodoItem(props) {
-  const { id, task, completed } = props;
+function TodoItem({ id, task, completed, updateTodo, deleteTodo, toggleTodo }) {
 
   // reusable hooks:
   const [input, toggleInput] = useToggle(false);
   const [text, setText, resetText] = useInputState(task);
 
   const handleDelete = () => {
-    props.deleteTodo(id);
+    deleteTodo(id)
+  }
+
+  const handleToggle = () => {
+    toggleTodo(id)
   }
 
   return (
     <ListItem>      
-      <Checkbox tabIndex={-1} checked={completed} />
+      <Checkbox tabIndex={-1} checked={completed} onClick={handleToggle} />
       {input 
       ? <form
           onSubmit={(e) => {
             e.preventDefault();
-            props.updateTodo(id, text);
+            updateTodo(id, text);
             toggleInput();
           }
         }>
