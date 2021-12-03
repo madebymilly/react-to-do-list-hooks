@@ -1,10 +1,16 @@
+import React, { useContext } from "react";
+
+import { TodosContext } from "./context/todos.context";
+
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 import useInputState from './hooks/useInputState'
 
-function TodoForm(props) {
+function TodoForm() {
+
+  const { addTodo } = useContext(TodosContext);
 
   // REUSEABLE HOOK:
   const [text, setText, resetText] = useInputState('');
@@ -14,7 +20,7 @@ function TodoForm(props) {
       <form 
         onSubmit={(e) => {
           e.preventDefault();
-          props.addTodo(text);
+          addTodo(text);
           resetText();
         }
       }>

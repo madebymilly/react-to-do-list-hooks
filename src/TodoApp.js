@@ -1,6 +1,6 @@
 import React from 'react';
-import useTodoState from './hooks/useTodoState';
-import useLocalStorageState from './hooks/useLocalStorageState';
+
+import { TodosProvider } from './context/todos.context';
 
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -11,13 +11,7 @@ import Grid from '@mui/material/Grid';
 import TodoList from './TodoList';
 import TodoForm from './TodoForm';
 
-function TodoApp() {
-
-  const [ initialTodos ] = [];
-  const [ todos, addTodo, deleteTodo, updateTodo, toggleTodo ] = useTodoState(initialTodos);
-
-  // const [ mood, setMood ] = useLocalStorageState('moods', 'happy')
-  
+function TodoApp() {  
   return (
     <Paper 
       style={{ padding: 0, margin: 0, height: '100vh', backgroundColor: '#fafafa'}}
@@ -30,16 +24,12 @@ function TodoApp() {
       </AppBar>
       <Grid container justifyContent="center" style={{marginTop: '1rem'}}>
         <Grid item xs={11} md={8} lg={4}>
-          <TodoForm addTodo={addTodo} />
-          <TodoList 
-            todos={todos} 
-            deleteTodo={deleteTodo} 
-            updateTodo={updateTodo} 
-            toggleTodo={toggleTodo}
-          />
+          <TodosProvider>
+            <TodoForm />
+            <TodoList />
+          </TodosProvider>
         </Grid>
       </Grid>
-      {/* <button onClick={() => setMood('angry')}>Get Angry!</button> */}
     </Paper>
   );
 }

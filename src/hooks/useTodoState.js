@@ -1,41 +1,29 @@
-import { v4 as uuidv4 } from 'uuid';
-
-import useLocalStorageState from './useLocalStorageState';
-
-function useTodoState(initialTodos = []) {
-
+import { useLocalStorageState } from "./useLocalStorageState";
+import { v4 as uuid } from 'uuid';
+export default initialTodos => {
   const [todos, setTodos] = useLocalStorageState("todos", initialTodos);
-
-  const addTodo = (newTask) => {
-    setTodos([...todos, {id: uuidv4(), task: newTask, completed: false }])
-  }
-  
-  const deleteTodo = (todoID) => {
-    let tempTodos = todos.filter(todo => todo.id !== todoID);
-    setTodos(tempTodos);
-  }
-  
-  const updateTodo = (todoID, updatedTask) => {
-    let tempTodos = todos.map(todo => todo.id === todoID 
-      ? { ...todo, task: updatedTask} 
-      : todo
-    );
-    setTodos(tempTodos);
-  }
-  
-  const toggleTodo = (todoID) => {
-    let tempTodos = todos.map(todo => todo.id === todoID
-      ? { ...todo, completed: !todo.completed }
-      : todo
-    );
-    setTodos(tempTodos)
-  }
-
-  return [todos, addTodo, deleteTodo, updateTodo, toggleTodo]
-
-}
-
-export default useTodoState;
-
-
-
+  return {
+    todos,
+    addTodo: newTodoText => {
+      setTodos([...todos, { id: uuid(), task: newTodoText, completed: false }]);
+    },
+    deleteTodo: todoId => {
+      //filter out removed todo
+      const updatedTodos = todos.filter(todo => todo.id !== todoId);
+      //call setTodos with new todos array
+      setTodos(updatedTodos);
+    },
+    toggleTodo: todoId => {
+      const updatedTodos = todos.map(todo =>
+        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
+      );
+      setTodos(updatedTodos);
+    },
+    updateTodo: (todoId, newTask) => {
+      const updatedTodos = todos.map(todo =>
+        todo.id === todoId ? { ...todo, task: newTask } : todo
+      );
+      setTodos(updatedTodos);
+    }
+  };
+};

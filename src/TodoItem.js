@@ -1,19 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
+
+import { TodosContext } from "./context/todos.context";
+
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { Edit, Delete } from '@mui/icons-material';
-
 import TextField from '@mui/material/TextField';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
+import { ListItemSecondaryAction } from '@mui/material';
 
 import useToggleState from './hooks/useToggleState'
 import useInputState from './hooks/useInputState'
-import { ListItemSecondaryAction } from '@mui/material';
 
-
-function TodoItem({ id, task, completed, updateTodo, deleteTodo, toggleTodo }) {
+function TodoItem({ id, task, completed }) {
+  const { updateTodo, deleteTodo, toggleTodo } = useContext(TodosContext);
 
   // reusable hooks:
   const [isEditing, toggleIsEditing] = useToggleState(false);
