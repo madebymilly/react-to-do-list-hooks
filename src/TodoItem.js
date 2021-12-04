@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 
-import { TodosContext } from "./context/todos.context";
+import { DispatchContext } from "./context/todos.context";
 
 import Checkbox from '@mui/material/Checkbox';
 import Button from '@mui/material/Button';
@@ -15,7 +15,7 @@ import useToggleState from './hooks/useToggleState'
 import useInputState from './hooks/useInputState'
 
 function TodoItem({ id, task, completed }) {
-  const { dispatch } = useContext(TodosContext);
+  const dispatch = useContext(DispatchContext);
 
   // reusable hooks:
   const [isEditing, toggleIsEditing] = useToggleState(false);

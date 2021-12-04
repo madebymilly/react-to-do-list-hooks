@@ -8,7 +8,7 @@ import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
 
 function TodoList() {
-  const { todos } = useContext(TodosContext);
+  const todos = useContext(TodosContext);
   if (todos.length) {
     return (
       <Paper>

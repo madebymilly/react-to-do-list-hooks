@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { TodosContext } from "./context/todos.context";
+import { DispatchContext } from "./context/todos.context";
 
 import Paper from '@mui/material/Paper';
 import TextField from '@mui/material/TextField';
@@ -10,7 +10,7 @@ import useInputState from './hooks/useInputState'
 
 function TodoForm() {
 
-  const { dispatch } = useContext(TodosContext);
+  const dispatch = useContext(DispatchContext);
 
   // REUSEABLE HOOK:
   const [text, setText, resetText] = useInputState('');
