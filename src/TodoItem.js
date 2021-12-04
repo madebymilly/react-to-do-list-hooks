@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, memo } from 'react'
 
 import { DispatchContext } from "./context/todos.context";
 
@@ -14,9 +14,10 @@ import { ListItemSecondaryAction } from '@mui/material';
 import useToggleState from './hooks/useToggleState'
 import useInputState from './hooks/useInputState'
 
+
 function TodoItem({ id, task, completed }) {
   const dispatch = useContext(DispatchContext);
-
+  console.log('todo re-render ', id);
   // reusable hooks:
   const [isEditing, toggleIsEditing] = useToggleState(false);
   const [text, setText, resetText] = useInputState(task);
@@ -62,4 +63,4 @@ function TodoItem({ id, task, completed }) {
   )
 }
 
-export default TodoItem;
+export default memo(TodoItem);
