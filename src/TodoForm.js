@@ -10,7 +10,7 @@ import useInputState from './hooks/useInputState'
 
 function TodoForm() {
 
-  const { addTodo } = useContext(TodosContext);
+  const { dispatch } = useContext(TodosContext);
 
   // REUSEABLE HOOK:
   const [text, setText, resetText] = useInputState('');
@@ -20,7 +20,7 @@ function TodoForm() {
       <form 
         onSubmit={(e) => {
           e.preventDefault();
-          addTodo(text);
+          dispatch({type: 'ADD', task: text});
           resetText();
         }
       }>

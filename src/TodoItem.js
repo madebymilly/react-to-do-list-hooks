@@ -15,18 +15,20 @@ import useToggleState from './hooks/useToggleState'
 import useInputState from './hooks/useInputState'
 
 function TodoItem({ id, task, completed }) {
-  const { updateTodo, deleteTodo, toggleTodo } = useContext(TodosContext);
+  const { dispatch } = useContext(TodosContext);
 
   // reusable hooks:
   const [isEditing, toggleIsEditing] = useToggleState(false);
   const [text, setText, resetText] = useInputState(task);
 
   const handleDelete = () => {
-    deleteTodo(id)
+    //deleteTodo(id)
+    dispatch({type:"DELETE", id: id});
   }
 
   const handleToggle = () => {
-    toggleTodo(id)
+    //toggleTodo(id)
+    dispatch({type:"TOGGLE", id: id});
   }
 
   return (
@@ -35,7 +37,8 @@ function TodoItem({ id, task, completed }) {
       ? <form
           onSubmit={(e) => {
             e.preventDefault();
-            updateTodo(id, text);
+            //updateTodo(id, text);
+            dispatch({type:"UPDATE", id: id, task: text});
             toggleIsEditing();
             resetText();
           }}
