@@ -17,7 +17,6 @@ import useInputState from './hooks/useInputState'
 
 function TodoItem({ id, task, completed }) {
   const dispatch = useContext(DispatchContext);
-  console.log('todo re-render ', id);
   // reusable hooks:
   const [isEditing, toggleIsEditing] = useToggleState(false);
   const [text, setText, resetText] = useInputState(task);
